@@ -1,0 +1,31 @@
+# Build outputs
+/build/
+/dist/
+/out/
+/target/
+
+# NetBeans (machine-specific)
+nbproject/private/
+nbbuild/
+nbdist/
+.nb-gradle/
+
+# Logs
+*.log
+
+# OS junk
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor/IDE
+.vscode/
+.idea/
+*.iml
+
+# JVM crash logs
+hs_err_pid*
+
+# Local env/secrets (kalau kamu bikin nanti)
+.env
+*.local.properties
