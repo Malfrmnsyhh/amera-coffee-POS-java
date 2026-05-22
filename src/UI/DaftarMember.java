@@ -207,7 +207,8 @@ public class DaftarMember extends javax.swing.JFrame {
         btnPilih = new javax.swing.JButton();
         btnBatal = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Daftar member");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 0));
