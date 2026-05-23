@@ -65,6 +65,7 @@ public class PopUpLogin extends javax.swing.JFrame {
         btnLanjut = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Pop up");
 
         jPanel1.setBackground(new java.awt.Color(0, 204, 204));
 
