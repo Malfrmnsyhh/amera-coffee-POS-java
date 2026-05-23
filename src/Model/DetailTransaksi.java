@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import Database.ProdukDAO;
 
 /**
  * Class untuk Business Logic Detail Transaksi
@@ -23,6 +24,7 @@ public class DetailTransaksi {
 
   private transaksi transaksiAktif;
   private List<DetailItem> itemList;
+  private ProdukDAO produkDAO = new ProdukDAO();
   private String lastError = "";
 
   public DetailTransaksi() {
@@ -191,6 +193,17 @@ public class DetailTransaksi {
           psDetail.setInt(5, item.getJumlah());
           psDetail.setInt(6, item.getSubtotal());
           psDetail.executeUpdate();
+        }
+      }
+
+      for (DetailItem item : itemList) {
+        int produkId = cariProdukId(c, item.getIdMenu());
+        if (produkId > 0) {
+          boolean stokBerhasil = produkDAO.kurangiStok(c, produkId, item.getJumlah());
+          if (!stokBerhasil) {
+            lastError = "Gagal mengurangi Stok untuk " + item.getNamaMenu();
+            throw new SQLException(lastError);
+          }
         }
       }
 

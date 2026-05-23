@@ -69,9 +69,9 @@
                       </Group>
                       <Group type="102" attributes="0">
                           <EmptySpace min="70" pref="70" max="-2" attributes="0"/>
-                          <Component id="jButton2" min="-2" pref="80" max="-2" attributes="0"/>
+                          <Component id="btnCancel" min="-2" pref="80" max="-2" attributes="0"/>
                           <EmptySpace min="290" pref="290" max="-2" attributes="0"/>
-                          <Component id="jButton1" min="-2" pref="100" max="-2" attributes="0"/>
+                          <Component id="btnLogout" min="-2" pref="100" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace pref="62" max="32767" attributes="0"/>
@@ -91,8 +91,8 @@
                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="35" pref="35" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jButton2" min="-2" pref="30" max="-2" attributes="0"/>
-                      <Component id="jButton1" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="btnCancel" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="btnLogout" min="-2" pref="30" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="56" max="32767" attributes="0"/>
               </Group>
@@ -132,7 +132,7 @@
             <Property name="text" type="java.lang.String" value="Lanjutkan?"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="btnLogout">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="66" red="99" type="rgb"/>
@@ -144,7 +144,7 @@
             <Property name="borderPainted" type="boolean" value="false"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton2">
+        <Component class="javax.swing.JButton" name="btnCancel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI Black" size="14" style="1"/>

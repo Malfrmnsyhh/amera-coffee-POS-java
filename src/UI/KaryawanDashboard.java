@@ -134,7 +134,6 @@ public class KaryawanDashboard extends javax.swing.JFrame {
         btnLogout.setForeground(new java.awt.Color(255, 255, 255));
         btnLogout.setText("Logout");
         btnLogout.setBorderPainted(false);
-        btnLogout.addActionListener(this::btnLogoutActionPerformed);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);

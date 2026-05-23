@@ -28,47 +28,47 @@ public class LogoutPopUp extends javax.swing.JFrame {
    */
   @SuppressWarnings("unchecked")
   // <editor-fold defaultstate="collapsed" desc="Generated
-  // Code">//GEN-BEGIN:initComponents
-  private void initComponents() {
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
 
-    jPanel1 = new javax.swing.JPanel();
-    jLabel1 = new javax.swing.JLabel();
-    jLabel2 = new javax.swing.JLabel();
-    jLabel3 = new javax.swing.JLabel();
-    jLabel4 = new javax.swing.JLabel();
-    jButton1 = new javax.swing.JButton();
-    jButton2 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        btnLogout = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
 
-    setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-    setResizable(false);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
-    jPanel1.setBackground(new java.awt.Color(204, 204, 0));
+        jPanel1.setBackground(new java.awt.Color(204, 204, 0));
 
-    jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Asset/logo.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Asset/logo.png"))); // NOI18N
 
-    jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-    jLabel2.setText("Anda akan logout dari aplikasi, pastikan Anda telah");
-    jLabel2.setToolTipText("");
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setText("Anda akan logout dari aplikasi, pastikan Anda telah");
+        jLabel2.setToolTipText("");
 
-    jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-    jLabel3.setText("Menyimpan Semua Pekerjaan yang telah Anda kerjakan.");
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel3.setText("Menyimpan Semua Pekerjaan yang telah Anda kerjakan.");
 
-    jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-    jLabel4.setText("Lanjutkan?");
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel4.setText("Lanjutkan?");
 
-    jButton1.setBackground(new java.awt.Color(153, 102, 0));
-    jButton1.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-    jButton1.setText("Logout");
-    jButton1.setBorderPainted(false);
+        btnLogout.setBackground(new java.awt.Color(153, 102, 0));
+        btnLogout.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        btnLogout.setText("Logout");
+        btnLogout.setBorderPainted(false);
 
-    jButton2.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
-    jButton2.setText("Cancel");
-    jButton2.setBorderPainted(false);
+        btnCancel.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        btnCancel.setText("Cancel");
+        btnCancel.setBorderPainted(false);
 
-    javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-    jPanel1.setLayout(jPanel1Layout);
-    jPanel1Layout.setHorizontalGroup(
-        jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -76,8 +76,7 @@ public class LogoutPopUp extends javax.swing.JFrame {
                         .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(80, 80, 80)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 440,
-                            javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(60, 60, 60)
                         .addComponent(jLabel3))
@@ -86,14 +85,13 @@ public class LogoutPopUp extends javax.swing.JFrame {
                         .addComponent(jLabel4))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(70, 70, 70)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 80,
-                            javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(290, 290, 290)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100,
-                            javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(62, Short.MAX_VALUE)));
-    jPanel1Layout.setVerticalGroup(
-        jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(62, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jLabel1)
@@ -105,42 +103,42 @@ public class LogoutPopUp extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addGap(35, 35, 35)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30,
-                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30,
-                        javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(56, Short.MAX_VALUE)));
+                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(56, Short.MAX_VALUE))
+        );
 
-    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-    getContentPane().setLayout(layout);
-    layout.setHorizontalGroup(
-        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-                Short.MAX_VALUE));
-    layout.setVerticalGroup(
-        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-                    javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)));
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
 
-    setSize(new java.awt.Dimension(618, 335));
-    setLocationRelativeTo(null);
-  }// </editor-fold>//GEN-END:initComponents
+        setSize(new java.awt.Dimension(618, 335));
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
 
   private void setupButtonListeners() {
-    jButton1.addActionListener(e -> {
-      Utils.Session.clear(); 
+    btnLogout.addActionListener(e -> {
+      Utils.Session.clear();
       new Formlogin().setVisible(true);
+
       java.awt.Window[] windows = java.awt.Window.getWindows();
       for (java.awt.Window w : windows) {
-        w.dispose();
+        if (! (w instanceof Formlogin)) {
+          w.dispose();
+        }
       }
     });
-
-    // Button Cancel (jButton2)
-    jButton2.addActionListener(e -> {
-      this.dispose(); // Close popup, return to dashboard
+    btnCancel.addActionListener(e -> {
+      this.dispose(); 
     });
   }
 
@@ -173,13 +171,13 @@ public class LogoutPopUp extends javax.swing.JFrame {
     java.awt.EventQueue.invokeLater(() -> new LogoutPopUp().setVisible(true));
   }
 
-  // Variables declaration - do not modify//GEN-BEGIN:variables
-  private javax.swing.JButton jButton1;
-  private javax.swing.JButton jButton2;
-  private javax.swing.JLabel jLabel1;
-  private javax.swing.JLabel jLabel2;
-  private javax.swing.JLabel jLabel3;
-  private javax.swing.JLabel jLabel4;
-  private javax.swing.JPanel jPanel1;
-  // End of variables declaration//GEN-END:variables
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnLogout;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
+    // End of variables declaration//GEN-END:variables
 }

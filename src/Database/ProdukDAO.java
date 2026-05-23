@@ -90,4 +90,21 @@ public class ProdukDAO {
 
     return list;
   }
+
+    public boolean kurangiStok(Connection conn, int idProduk, int jumlah) {
+    String sql = "UPDATE produk SET stok = stok - ? WHERE id = ? AND stok >= ?";
+
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+      ps.setInt(1, jumlah);
+      ps.setInt(2, idProduk);
+      ps.setInt(3, jumlah);
+
+      int rowsAffected = ps.executeUpdate();
+      return rowsAffected > 0;
+    } catch (Exception e) {
+      System.err.println("ProdukDAO.kurangiStok: " + e.getMessage());
+      e.printStackTrace();
+    }
+    return false;
+  }
 }
