@@ -661,7 +661,28 @@ public class Kasir extends javax.swing.JPanel {
   }// GEN-LAST:event_btnSimpanActionPerformed
 
   private void btnCetakStruckActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnCetakStruckActionPerformed
-    // TODO add your handling code here:
+    if (detailTransaksi.getItemList().isEmpty()) {
+      JOptionPane.showMessageDialog(this, 
+        "Tidak ada item traksaksi untuk di cetak!",
+        "Info", JOptionPane.WARNING_MESSAGE);
+      return;
+    }
+
+    java.awt.Frame perentFrame = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this);
+
+    StrukDialog struk = new StrukDialog(
+      perentFrame,
+      txNoTransaksi.getText(),
+      namaKasir,
+      txNamaCustomer.getText().isEmpty() ? "Umum" : txNamaCustomer.getText(),
+      CbNomorMeja.getSelectedIndex() == 0 ? "-" : CbNomorMeja.getSelectedItem().toString(),
+      txTanggal.getText(),
+      detailTransaksi.getItemList(),
+      txTotalBayar.getText(),
+      txBayar.getText(),
+      txKembalian.getText()
+    );
+    struk.setVisible(true);
   }// GEN-LAST:event_btnCetakStruckActionPerformed
 
   private void txJumlahActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txJumlahActionPerformed
