@@ -10,309 +10,499 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
 import java.util.List;
 
-/**
- *
- * @author nitro5
- */
+
 public class DaftarMember extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DaftarMember.class.getName());
-    
-    private DefaultTableModel model;
-    private Member selectedMember;
-    private Kasir parentKasir;
 
-    /**
-     * Creates new form DaftarMember
-     */
-    public DaftarMember() {
-        initComponents();
-        this.selectedMember = null;
-        this.parentKasir = null;
-        setupTable();
-        loadMemberData();
-        setupButtonActions();
+  private static final java.util.logging.Logger logger = java.util.logging.Logger
+      .getLogger(DaftarMember.class.getName());
+
+  private DefaultTableModel model;
+  private Member selectedMember;
+  private Kasir parentKasir;
+  private int selectedMemberId = 0;
+
+
+  public DaftarMember() {
+    initComponents();
+    this.selectedMember = null;
+    this.parentKasir = null;
+    setupTable();
+    loadMemberData();
+    setupButtonActions();
+  }
+
+  /**
+   * Constructor dengan parent Kasir
+   */
+  public DaftarMember(Kasir parent) {
+    initComponents();
+    this.selectedMember = null;
+    this.parentKasir = parent;
+    if (parentKasir != null) {
+      setAlwaysOnTop(true);
+      java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(parentKasir);
+      if (window != null) {
+        setLocationRelativeTo(window);
+      }
     }
-    
-    /**
-     * Constructor dengan parent Kasir
-     */
-    public DaftarMember(Kasir parent) {
-        initComponents();
-        this.selectedMember = null;
-        this.parentKasir = parent;
-        if (parentKasir != null) {
-            setAlwaysOnTop(true);
-            java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(parentKasir);
-            if (window != null) {
-                setLocationRelativeTo(window);
-            }
-        }
-        setupTable();
-        loadMemberData();
-        setupButtonActions();
+    setupTable();
+    loadMemberData();
+    setupButtonActions();
+  }
+
+  /**
+   * Setup table model dengan kolom yang sesuai
+   */
+  private void setupTable() {
+    model = new DefaultTableModel(
+        new String[] { "ID", "Kode Member", "Nama", "No HP" },
+        0) {
+      @Override
+      public boolean isCellEditable(int row, int column) {
+        return false;
+      }
+    };
+    tabelDaftarMember.setModel(model);
+    tabelDaftarMember.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+    tabelDaftarMember.getColumnModel().getColumn(0).setPreferredWidth(30);
+    tabelDaftarMember.getColumnModel().getColumn(1).setPreferredWidth(80);
+    tabelDaftarMember.getColumnModel().getColumn(2).setPreferredWidth(150);
+    tabelDaftarMember.getColumnModel().getColumn(3).setPreferredWidth(120);
+  }
+
+  /**
+   * Load semua data member dari database
+   */
+  private void loadMemberData() {
+    model.setRowCount(0);
+    if (!Database.Koneksi.isConnected()) {
+      JOptionPane.showMessageDialog(this,
+          "Database tidak terhubung.\nCek MySQL (port 3308), database amera_coffee, user/password di Koneksi.java.",
+          "Koneksi Gagal", JOptionPane.ERROR_MESSAGE);
+      return;
     }
-    
-    /**
-     * Setup table model dengan kolom yang sesuai
-     */
-    private void setupTable() {
-        model = new DefaultTableModel(
-            new String[]{"ID", "Kode Member", "Nama", "No HP"},
-            0
-        ) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
+    try {
+      MemberDAO dao = new MemberDAO();
+      List<Member> members = dao.getAllMembers();
+
+      if (members.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+            "Tidak ada data member.\nJalankan INSERT di file amera_coffee.sql (MB001, MB002).",
+            "Info", JOptionPane.INFORMATION_MESSAGE);
+        return;
+      }
+
+      for (Member member : members) {
+        Object[] row = {
+            member.getId(),
+            member.getKodeMember(),
+            member.getNama(),
+            member.getNoHp() != null ? member.getNoHp() : ""
         };
-        tabelDaftarMember.setModel(model);
-        tabelDaftarMember.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        tabelDaftarMember.getColumnModel().getColumn(0).setPreferredWidth(30);
-        tabelDaftarMember.getColumnModel().getColumn(1).setPreferredWidth(80);
-        tabelDaftarMember.getColumnModel().getColumn(2).setPreferredWidth(150);
-        tabelDaftarMember.getColumnModel().getColumn(3).setPreferredWidth(120);
+        model.addRow(row);
+      }
+    } catch (Exception e) {
+      JOptionPane.showMessageDialog(this, "Error loading data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+      e.printStackTrace();
     }
-    
-    /**
-     * Load semua data member dari database
-     */
-    private void loadMemberData() {
-        model.setRowCount(0);
-        if (!Database.Koneksi.isConnected()) {
-            JOptionPane.showMessageDialog(this,
-                "Database tidak terhubung.\nCek MySQL (port 3308), database amera_coffee, user/password di Koneksi.java.",
-                "Koneksi Gagal", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        try {
-            MemberDAO dao = new MemberDAO();
-            List<Member> members = dao.getAllMembers();
-            
-            if (members.isEmpty()) {
-                JOptionPane.showMessageDialog(this,
-                    "Tidak ada data member.\nJalankan INSERT di file amera_coffee.sql (MB001, MB002).",
-                    "Info", JOptionPane.INFORMATION_MESSAGE);
-                return;
-            }
-            
-            for (Member member : members) {
-                Object[] row = {
-                    member.getId(),
-                    member.getKodeMember(),
-                    member.getNama(),
-                    member.getNoHp() != null ? member.getNoHp() : ""
-                };
-                model.addRow(row);
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error loading data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
-    }
-    
-    /**
-     * Setup button action listeners
-     */
-    private void setupButtonActions() {
-        btnPilih.addActionListener(e -> pilihMember());
-        btnBatal.addActionListener(e -> batalkan());
-        tabelDaftarMember.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
-                if (e.getClickCount() == 2 && tabelDaftarMember.getSelectedRow() >= 0) {
-                    pilihMember();
-                }
-            }
-        });
-    }
-    
-    /**
-     * Action saat button Pilih diklik
-     */
-    private void pilihMember() {
+  }
+
+  /**
+   * Setup button action listeners
+   */
+  private void setupButtonActions() {
+    // Klik baris di tabel → isi otomatis field form di bawah
+    tabelDaftarMember.addMouseListener(new java.awt.event.MouseAdapter() {
+      @Override
+      public void mouseClicked(java.awt.event.MouseEvent e) {
         int viewRow = tabelDaftarMember.getSelectedRow();
-        if (viewRow < 0) {
-            JOptionPane.showMessageDialog(this, "Klik satu baris member di tabel, lalu tekan Pilih.", "Validasi",
-                JOptionPane.WARNING_MESSAGE);
-            return;
+        if (viewRow >= 0) {
+          int modelRow = tabelDaftarMember.convertRowIndexToModel(viewRow);
+          selectedMemberId = toInt(model.getValueAt(modelRow, 0));
+          txKodeMember.setText(String.valueOf(model.getValueAt(modelRow, 1)));
+          txNamaMember.setText(String.valueOf(model.getValueAt(modelRow, 2)));
+          txNoHp.setText(model.getValueAt(modelRow, 3) != null
+              ? String.valueOf(model.getValueAt(modelRow, 3))
+              : "");
+          // Double-click langsung pilih member (untuk Kasir)
+          if (e.getClickCount() == 2 && parentKasir != null) {
+            pilihMember();
+          }
         }
-
-        try {
-            int modelRow = tabelDaftarMember.convertRowIndexToModel(viewRow);
-            selectedMember = memberFromTableRow(modelRow);
-
-            if (parentKasir != null) {
-                parentKasir.setSelectedMember(selectedMember);
-                java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(parentKasir);
-                if (window != null) {
-                    window.toFront();
-                }
-            } else {
-                JOptionPane.showMessageDialog(this,
-                    "Member dipilih: " + selectedMember.getNama()
-                        + "\n(Buka form ini dari Kasir agar data terisi otomatis.)",
-                    "Info", JOptionPane.INFORMATION_MESSAGE);
-            }
-            dispose();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
-    }
-
-    private Member memberFromTableRow(int modelRow) {
-        int id = toInt(model.getValueAt(modelRow, 0));
-        String kode = String.valueOf(model.getValueAt(modelRow, 1));
-        String nama = String.valueOf(model.getValueAt(modelRow, 2));
-        String noHp = model.getValueAt(modelRow, 3) != null ? String.valueOf(model.getValueAt(modelRow, 3)) : "";
-        return new Member(id, kode, nama, noHp);
-    }
-
-    private static int toInt(Object value) {
-        if (value instanceof Number) {
-            return ((Number) value).intValue();
-        }
-        return Integer.parseInt(String.valueOf(value));
-    }
+      }
+    });
     
-    /**
-     * Action saat button Batal diklik
-     */
-    private void batalkan() {
-        selectedMember = null;
-        this.dispose();
+    btnTambah.addActionListener(e -> tambahMember());
+    btnEdit.addActionListener(e -> editMember());
+    btnHapus.addActionListener(e -> hapusMember());
+    btnBatal.addActionListener(e -> clearForm());
+    btnPilih.addActionListener(e -> pilihMember());
+  }
+
+  // Action saat button Pilih diklik
+  private void pilihMember() {
+    int viewRow = tabelDaftarMember.getSelectedRow();
+    if (viewRow < 0) {
+      JOptionPane.showMessageDialog(this, "Klik satu baris member di tabel, lalu tekan Pilih.", "Validasi",
+          JOptionPane.WARNING_MESSAGE);
+      return;
     }
-    
-    /**
-     * Get selected member
-     */
-    public Member getSelectedMember() {
-        return selectedMember;
+
+    try {
+      int modelRow = tabelDaftarMember.convertRowIndexToModel(viewRow);
+      selectedMember = memberFromTableRow(modelRow);
+
+      if (parentKasir != null) {
+        parentKasir.setSelectedMember(selectedMember);
+        java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(parentKasir);
+        if (window != null) {
+          window.toFront();
+        }
+      } else {
+        JOptionPane.showMessageDialog(this,
+            "Member dipilih: " + selectedMember.getNama()
+                + "\n(Buka form ini dari Kasir agar data terisi otomatis.)",
+            "Info", JOptionPane.INFORMATION_MESSAGE);
+      }
+      dispose();
+    } catch (Exception e) {
+      JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+      e.printStackTrace();
+    }
+  }
+
+  private Member memberFromTableRow(int modelRow) {
+    int id = toInt(model.getValueAt(modelRow, 0));
+    String kode = String.valueOf(model.getValueAt(modelRow, 1));
+    String nama = String.valueOf(model.getValueAt(modelRow, 2));
+    String noHp = model.getValueAt(modelRow, 3) != null ? String.valueOf(model.getValueAt(modelRow, 3)) : "";
+    return new Member(id, kode, nama, noHp);
+  }
+
+  private static int toInt(Object value) {
+    if (value instanceof Number) {
+      return ((Number) value).intValue();
+    }
+    return Integer.parseInt(String.valueOf(value));
+  }
+
+  // Action saat button Batal diklik
+  private void batalkan() {
+    selectedMember = null;
+    this.dispose();
+  }
+
+  // Get selected member
+  public Member getSelectedMember() {
+    return selectedMember;
+  }
+
+  // Bersihkan semua field form dan reset state
+  private void clearForm() {
+    txKodeMember.setText("");
+    txNamaMember.setText("");
+    txNoHp.setText("");
+    selectedMemberId = 0;
+    tabelDaftarMember.clearSelection();
+  }
+
+  // Validasi input field — return false kalau ada yang kosong
+  private boolean isInputValid() {
+    if (txKodeMember.getText().trim().isEmpty()) {
+      JOptionPane.showMessageDialog(this, "Kode Member tidak boleh kosong!",
+          "Validasi", JOptionPane.WARNING_MESSAGE);
+      txKodeMember.requestFocus();
+      return false;
+    }
+    if (txNamaMember.getText().trim().isEmpty()) {
+      JOptionPane.showMessageDialog(this, "Nama Member tidak boleh kosong!",
+          "Validasi", JOptionPane.WARNING_MESSAGE);
+      txNamaMember.requestFocus();
+      return false;
+    }
+    return true;
+  }
+
+  // Tambah member baru ke database
+  private void tambahMember() {
+    if (!isInputValid()) return;
+
+    String kode = txKodeMember.getText().trim();
+    String nama = txNamaMember.getText().trim();
+    String noHp = txNoHp.getText().trim();
+
+    MemberDAO dao = new MemberDAO();
+    boolean berhasil = dao.tambahMember(kode, nama, noHp);
+
+    if (berhasil) {
+      JOptionPane.showMessageDialog(this, "Member berhasil ditambahkan!",
+          "Sukses", JOptionPane.INFORMATION_MESSAGE);
+      loadMemberData(); // refresh tabel
+      clearForm();
+    } else {
+      JOptionPane.showMessageDialog(this,
+          "Gagal menambah member.\nKemungkinan kode member sudah ada.",
+          "Error", JOptionPane.ERROR_MESSAGE);
+    }
+  }
+
+  // Update data member yang dipilih
+  private void editMember() {
+    if (selectedMemberId == 0) {
+      JOptionPane.showMessageDialog(this, "Pilih member di tabel terlebih dahulu!",
+          "Validasi", JOptionPane.WARNING_MESSAGE);
+      return;
+    }
+    if (!isInputValid()) return;
+
+    String kode = txKodeMember.getText().trim();
+    String nama = txNamaMember.getText().trim();
+    String noHp = txNoHp.getText().trim();
+
+    MemberDAO dao = new MemberDAO();
+    boolean berhasil = dao.updateMember(selectedMemberId, kode, nama, noHp);
+
+    if (berhasil) {
+      JOptionPane.showMessageDialog(this, "Data member berhasil diupdate!",
+          "Sukses", JOptionPane.INFORMATION_MESSAGE);
+      loadMemberData();
+      clearForm();
+    } else {
+      JOptionPane.showMessageDialog(this, "Gagal mengupdate member.",
+          "Error", JOptionPane.ERROR_MESSAGE);
+    }
+  }
+
+  // Hapus member yang dipilih dari database
+  private void hapusMember() {
+    if (selectedMemberId == 0) {
+      JOptionPane.showMessageDialog(this, "Pilih member di tabel terlebih dahulu!",
+          "Validasi", JOptionPane.WARNING_MESSAGE);
+      return;
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    // Konfirmasi sebelum hapus
+    int konfirmasi = JOptionPane.showConfirmDialog(this,
+        "Yakin ingin menghapus member: " + txNamaMember.getText() + "?",
+        "Konfirmasi Hapus",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.WARNING_MESSAGE);
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tabelDaftarMember = new javax.swing.JTable();
-        btnPilih = new javax.swing.JButton();
-        btnBatal = new javax.swing.JButton();
+    if (konfirmasi == JOptionPane.YES_OPTION) {
+      MemberDAO dao = new MemberDAO();
+      boolean berhasil = dao.hapusMember(selectedMemberId);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Daftar member");
-        setResizable(false);
+      if (berhasil) {
+        JOptionPane.showMessageDialog(this, "Member berhasil dihapus!",
+            "Sukses", JOptionPane.INFORMATION_MESSAGE);
+        loadMemberData();
+        clearForm();
+      } else {
+        JOptionPane.showMessageDialog(this,
+            "Gagal menghapus member.\nMember mungkin memiliki data transaksi.",
+            "Error", JOptionPane.ERROR_MESSAGE);
+      }
+    }
+  }
 
-        jPanel1.setBackground(new java.awt.Color(204, 204, 0));
+  /**
+   * This method is called from within the constructor to initialize the form.
+   * WARNING: Do NOT modify this code. The content of this method is always
+   * regenerated by the Form Editor.
+   */
+  @SuppressWarnings("unchecked")
+  // <editor-fold defaultstate="collapsed" desc="Generated
+  // Code">//GEN-BEGIN:initComponents
+  private void initComponents() {
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setText("Daftar Member");
+    jPanel1 = new javax.swing.JPanel();
+    jLabel1 = new javax.swing.JLabel();
+    jScrollPane1 = new javax.swing.JScrollPane();
+    tabelDaftarMember = new javax.swing.JTable();
+    btnPilih = new javax.swing.JButton();
+    btnBatal = new javax.swing.JButton();
+    jLabel2 = new javax.swing.JLabel();
+    txNamaMember = new javax.swing.JTextField();
+    jLabel3 = new javax.swing.JLabel();
+    txKodeMember = new javax.swing.JTextField();
+    jLabel4 = new javax.swing.JLabel();
+    txNoHp = new javax.swing.JTextField();
+    btnTambah = new javax.swing.JButton();
+    btnEdit = new javax.swing.JButton();
+    btnHapus = new javax.swing.JButton();
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+    setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+    setTitle("Daftar member");
+    setResizable(false);
+
+    jPanel1.setBackground(new java.awt.Color(204, 204, 0));
+
+    jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+    jLabel1.setText("Daftar Member");
+
+    javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+    jPanel1.setLayout(jPanel1Layout);
+    jPanel1Layout.setHorizontalGroup(
+        jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addGap(187, 187, 187)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+    jPanel1Layout.setVerticalGroup(
+        jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addGap(16, 16, 16)
                 .addComponent(jLabel1)
-                .addContainerGap(19, Short.MAX_VALUE))
-        );
+                .addContainerGap(20, Short.MAX_VALUE)));
 
-        tabelDaftarMember.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(tabelDaftarMember);
+    tabelDaftarMember.setModel(new javax.swing.table.DefaultTableModel(
+        new Object[][] {
+            { null, null, null, null },
+            { null, null, null, null },
+            { null, null, null, null },
+            { null, null, null, null }
+        },
+        new String[] {
+            "Title 1", "Title 2", "Title 3", "Title 4"
+        }));
+    jScrollPane1.setViewportView(tabelDaftarMember);
 
-        btnPilih.setText("Pilih");
+    btnPilih.setText("Pilih");
 
-        btnBatal.setText("Batal");
+    btnBatal.setText("Batal");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+    jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+    jLabel2.setText("Nama Member");
+
+    jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+    jLabel3.setText("Kode Member");
+
+    jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+    jLabel4.setText("No Hp");
+
+    btnTambah.setText("Tambah");
+
+    btnEdit.setText("Edit");
+
+    btnHapus.setText("Hapus");
+
+    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+    getContentPane().setLayout(layout);
+    layout.setHorizontalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+                Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnBatal)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnPilih)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnTambah)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnEdit)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnHapus)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                    javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnBatal)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnPilih))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                    javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txNoHp, javax.swing.GroupLayout.Alignment.TRAILING,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
+                                    .addComponent(txNamaMember, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txKodeMember, javax.swing.GroupLayout.Alignment.TRAILING))))))
+                .addContainerGap()));
+    layout.setVerticalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+                    javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168,
+                    javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 33,
+                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txKodeMember, javax.swing.GroupLayout.PREFERRED_SIZE, 33,
+                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txNamaMember, javax.swing.GroupLayout.PREFERRED_SIZE, 30,
+                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txNoHp, javax.swing.GroupLayout.PREFERRED_SIZE, 31,
+                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPilih)
-                    .addComponent(btnBatal))
-                .addGap(16, 16, 16))
-        );
+                    .addComponent(btnBatal)
+                    .addComponent(btnTambah)
+                    .addComponent(btnEdit)
+                    .addComponent(btnHapus))
+                .addGap(16, 16, 16)));
 
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
+    pack();
+  }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
+  /**
+   * @param args the command line arguments
+   */
+  public static void main(String args[]) {
+    /* Set the Nimbus look and feel */
+    // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
+    // (optional) ">
+    /*
+     * If Nimbus (introduced in Java SE 6) is not available, stay with the default
+     * look and feel.
+     * For details see
+     * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+    try {
+      for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+        if ("Nimbus".equals(info.getName())) {
+          javax.swing.UIManager.setLookAndFeel(info.getClassName());
+          break;
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new DaftarMember().setVisible(true));
+      }
+    } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+      logger.log(java.util.logging.Level.SEVERE, null, ex);
     }
+    // </editor-fold>
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBatal;
-    private javax.swing.JButton btnPilih;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tabelDaftarMember;
-    // End of variables declaration//GEN-END:variables
+    /* Create and display the form */
+    java.awt.EventQueue.invokeLater(() -> new DaftarMember().setVisible(true));
+  }
+
+  // Variables declaration - do not modify//GEN-BEGIN:variables
+  private javax.swing.JButton btnBatal;
+  private javax.swing.JButton btnEdit;
+  private javax.swing.JButton btnHapus;
+  private javax.swing.JButton btnPilih;
+  private javax.swing.JButton btnTambah;
+  private javax.swing.JLabel jLabel1;
+  private javax.swing.JLabel jLabel2;
+  private javax.swing.JLabel jLabel3;
+  private javax.swing.JLabel jLabel4;
+  private javax.swing.JPanel jPanel1;
+  private javax.swing.JScrollPane jScrollPane1;
+  private javax.swing.JTable tabelDaftarMember;
+  private javax.swing.JTextField txKodeMember;
+  private javax.swing.JTextField txNamaMember;
+  private javax.swing.JTextField txNoHp;
+  // End of variables declaration//GEN-END:variables
 }

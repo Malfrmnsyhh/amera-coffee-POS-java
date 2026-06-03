@@ -42,7 +42,7 @@ public class StrukDialog extends javax.swing.JDialog {
     String garis = "================================";
     sb.append(garis).append("\n");
     sb.append("         AMERA COFFEE           \n");
-    sb.append("    Sistem POS - Coffee Shop    \n");
+    sb.append("    Coffee shop pilihan anda!    \n");
     sb.append(garis).append("\n");
     sb.append("No Transaksi : ").append(noTransaksi).append("\n");
     sb.append("Kasir        : ").append(namaKasir).append("\n");
@@ -57,7 +57,6 @@ public class StrukDialog extends javax.swing.JDialog {
       String nama = item.getNamaMenu();
       String jumlah = "x" + item.getJumlah();
       String subtotal = "Rp " + String.format("%,d", item.getSubtotal()).replace(',', '.');
-      // Format: nama item (18 char) | jumlah (3 char) | subtotal (10 char)
       sb.append(String.format("%-18s %3s %10s\n", nama, jumlah, subtotal));
     }
     sb.append(garis).append("\n");
@@ -66,7 +65,7 @@ public class StrukDialog extends javax.swing.JDialog {
     sb.append(String.format("%-14s %16s\n", "Kembalian", kembalian));
     sb.append(garis).append("\n");
     sb.append("       Terima Kasih!            \n");
-    sb.append("  Selamat menikmati kopi Anda!  \n");
+    sb.append("  Selamat menikmati Pesanan Anda!  \n");
     sb.append(garis).append("\n");
     return sb.toString();
   }
@@ -92,7 +91,7 @@ public class StrukDialog extends javax.swing.JDialog {
     
     JButton btnTutup = new JButton("Tutup");
     btnTutup.setFont(new Font("Segoe UI", Font.BOLD, 13));
-    btnTutup.addActionListener(e -> dispose()); // dispose() = tutup dialog ini
+    btnTutup.addActionListener(e -> dispose());
     
     JPanel panelTombol = new JPanel();
     panelTombol.add(btnPrint);
@@ -109,7 +108,7 @@ public class StrukDialog extends javax.swing.JDialog {
     
     printerJob.setPrintable((graphics, pageFormat, pageIndex) -> {
       if (pageIndex > 0)
-        return Printable.NO_SUCH_PAGE; // Hanya 1 halaman
+        return Printable.NO_SUCH_PAGE;
       graphics.setFont(new Font("Courier New", Font.PLAIN, 11));
       java.awt.FontMetrics fm = graphics.getFontMetrics();
       

@@ -13,9 +13,7 @@ import java.util.List;
  */
 public class MemberDAO {
 
-  /**
-   * Cari member berdasarkan kode member
-   */
+  // Cari member berdasarkan kode member
   public Member cariByKode(String kodeMember) {
     if (kodeMember == null || kodeMember.trim().isEmpty()) {
       return null;
@@ -45,9 +43,7 @@ public class MemberDAO {
     return null;
   }
 
-  /**
-   * Cari member berdasarkan ID member
-   */
+  // Cari member berdasarkan ID member
   public Member cariById(int idMember) {
     String sql = "SELECT id, kode_member, nama, no_hp FROM member WHERE id = ?";
 
@@ -72,9 +68,7 @@ public class MemberDAO {
     return null;
   }
 
-  /**
-   * Ambil semua data member dari database
-   */
+  // Ambil semua data member dari database
   public List<Member> getAllMembers() {
     List<Member> memberList = new ArrayList<>();
     String sql = "SELECT id, kode_member, nama, no_hp FROM member ORDER BY id ASC";
@@ -130,5 +124,58 @@ public class MemberDAO {
     }
 
     return memberList;
+  }
+
+  // fungsi CRUD untuk member
+  public boolean tambahMember(String kodeMember, String nama, String noHp) {
+    String sql = "INSERT INTO member (kode_member, nama, no_hp) VALUES (?, ?, ?)";
+
+    try (Connection conn = Koneksi.getKoneksi();
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+
+      ps.setString(1, kodeMember.trim().toUpperCase());
+      ps.setString(2, nama.trim());
+      ps.setString(3, noHp.trim().isEmpty() ? null : noHp.trim());
+
+      return ps.executeUpdate() > 0;
+    } catch (Exception e) {
+      System.err.println("MemberDAO.tambahMember: " + e.getMessage());
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean updateMember(int id, String kodeMember, String nama, String noHp) {
+    String sql = "UPDATE member SET kode_member = ?, nama = ?, no_hp = ? WHERE id = ?";
+
+    try (Connection conn = Koneksi.getKoneksi();
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+        
+        ps.setString(1, kodeMember.trim().toUpperCase());
+        ps.setString(2, nama.trim());
+        ps.setString(3, noHp.trim().isEmpty() ? null : noHp.trim());
+        ps.setInt(4, id);
+
+        return ps.executeUpdate() > 0;
+    } catch (Exception e) {
+      System.err.println("MemberDAO.updateMember: " + e.getMessage());
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean hapusMember(int id) {
+    String sql = "DELETE FROM member WHERE id = ?";
+
+    try (Connection conn = Koneksi.getKoneksi();
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+          
+          ps.setInt(1, id);
+          return ps.executeUpdate() > 0;
+    } catch (Exception e) {
+      System.err.println("MemberDAO.hapusMember: " + e.getMessage());
+      e.printStackTrace();
+      return false;
+    }
   }
 }
