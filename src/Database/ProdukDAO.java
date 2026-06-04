@@ -107,4 +107,57 @@ public class ProdukDAO {
     }
     return false;
   }
+
+  // tambah produk
+  public boolean tambahProduk(String kodeProduk, String namaProduk, int harga, int Stok) {
+    String sql = "INSERT INTO produk (kode_produk, nama_produk, harga, stok) VALUES (?, ?, ?, ?)";
+    try (Connection conn = Koneksi.getKoneksi();
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+          ps.setString(1, kodeProduk.trim().toUpperCase());
+          ps.setString(2, namaProduk.trim());
+          ps.setInt(3, harga);
+          ps.setInt(4, Stok);
+
+          return ps.executeUpdate() > 0;
+    } catch (Exception e) {
+      System.err.println("ProdukDAO.tambahProduk: " + e.getMessage());
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  // update produk
+  public boolean updateProduk(int id, String kodeProduk, String namaProduk, int harga, int stok) {
+    String sql = "UPDATE produk SET kode_produk = ?, nama_produk = ?, harga = ?, stok = ? WHERE id = ?";
+
+    try (Connection conn = Koneksi.getKoneksi();
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+          ps.setString(1, kodeProduk.trim().toUpperCase());
+          ps.setString(2, namaProduk.trim());
+          ps.setInt(3, harga);
+          ps.setInt(4, stok);
+          ps.setInt(5, id);
+
+          return ps.executeUpdate() > 0;
+    } catch (Exception e) {
+      System.err.println("ProdukDAO.updateProduk: " + e.getMessage());
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  // hapus produk
+  public boolean hapusProduk(int id) {
+    String sql = "DELETE FROM produk WHERE id = ?";
+    try (Connection conn = Koneksi.getKoneksi();
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+          ps.setInt(1, id);
+        
+          return ps.executeUpdate() > 0;
+    } catch (Exception e) {
+      System.err.println("ProdukDAO.hapusProduk: " + e.getMessage());
+      e.printStackTrace();
+      return false;
+    }
+  }
 }
