@@ -40,6 +40,7 @@ public class DaftarProduk extends javax.swing.JFrame {
   private void initLogic() {
     setupTable();
     loadProdukData();
+    setupSearchField();
 
     // Aksi double click baris tabel atau klik tombol Pilih
     btnPilih.addActionListener(e -> pilihProduk());
@@ -66,6 +67,45 @@ public class DaftarProduk extends javax.swing.JFrame {
     btnTambah.addActionListener(e -> tambahProduk());
     btnEdit.addActionListener(e -> editProduk());
     btnHapus.addActionListener(e -> hapusProduk());
+  }
+
+  private void setupSearchField() {
+    jPanel1.setLayout(new java.awt.BorderLayout(10, 10));
+    jPanel1.add(jLabel1, java.awt.BorderLayout.WEST);
+
+    javax.swing.JPanel searchPanel = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+    searchPanel.setOpaque(false);
+    javax.swing.JLabel lblSearch = new javax.swing.JLabel("Cari Produk: ");
+    lblSearch.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+    searchPanel.add(lblSearch);
+
+    javax.swing.JTextField txSearch = new javax.swing.JTextField(15);
+    searchPanel.add(txSearch);
+    jPanel1.add(searchPanel, java.awt.BorderLayout.EAST);
+
+    // Setup sorter untuk filter real-time
+    javax.swing.table.TableRowSorter<javax.swing.table.DefaultTableModel> sorter =
+        new javax.swing.table.TableRowSorter<>(model);
+    TabelDaftarProduk.setRowSorter(sorter);
+
+    txSearch.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+      @Override
+      public void insertUpdate(javax.swing.event.DocumentEvent e) { filter(); }
+      @Override
+      public void removeUpdate(javax.swing.event.DocumentEvent e) { filter(); }
+      @Override
+      public void changedUpdate(javax.swing.event.DocumentEvent e) { filter(); }
+
+      private void filter() {
+        String text = txSearch.getText().trim();
+        if (text.isEmpty()) {
+          sorter.setRowFilter(null);
+        } else {
+          // Filter berdasarkan Kode Produk (kolom 1) atau Nama Produk (kolom 2)
+          sorter.setRowFilter(javax.swing.RowFilter.regexFilter("(?i)" + text, 1, 2));
+        }
+      }
+    });
   }
 
   private void setupTable() {

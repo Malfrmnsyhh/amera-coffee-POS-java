@@ -11,9 +11,9 @@ CREATE TABLE users (
 );
 
 INSERT INTO users (username, password, nama_lengkap, role) VALUES
-("admin", "12345", "Muhammad Akmal", "admin"),
-("kasir1", "12345", "Dimas Dzaky", "karyawan"),
-("kasir2", "12345", "Eka Ahmad", "karyawan");
+("admin", SHA2("12345", 256), "Muhammad Akmal", "admin"),
+("kasir1", SHA2("12345", 256), "Dimas Dzaky", "karyawan"),
+("kasir2", SHA2("12345", 256), "Eka Ahmad", "karyawan");
 
 CREATE TABLE member (
   id INT PRIMARY KEY AUTO_INCREMENT,

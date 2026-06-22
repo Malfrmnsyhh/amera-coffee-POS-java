@@ -33,6 +33,20 @@ public class StrukDialog extends javax.swing.JDialog {
     setLocationRelativeTo(perent);
   }
 
+  private String centerText(String text, int width) {
+    if (text == null) return "";
+    if (text.length() >= width) {
+      return text.substring(0, width);
+    }
+    int padding = (width - text.length()) / 2;
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < padding; i++) {
+      sb.append(" ");
+    }
+    sb.append(text);
+    return sb.toString();
+  }
+
   private String buildStrukText(String noTransaksi, String namaKasir,
       String namaCustomer, String nomorMeja,
       String tanggal,
@@ -41,31 +55,34 @@ public class StrukDialog extends javax.swing.JDialog {
     StringBuilder sb = new StringBuilder();
     String garis = "================================";
     sb.append(garis).append("\n");
-    sb.append("         AMERA COFFEE           \n");
-    sb.append("    Coffee shop pilihan anda!    \n");
+    sb.append(centerText("AMERA COFFEE", 32)).append("\n");
+    sb.append(centerText("Coffee shop pilihan anda!", 32)).append("\n");
     sb.append(garis).append("\n");
-    sb.append("No Transaksi : ").append(noTransaksi).append("\n");
-    sb.append("Kasir        : ").append(namaKasir).append("\n");
-    sb.append("Customer     : ").append(namaCustomer).append("\n");
-    sb.append("Meja         : ").append(nomorMeja).append("\n");
-    sb.append("Tanggal      : ").append(tanggal).append("\n");
+    sb.append(String.format("%-14s : %s\n", "No Transaksi", noTransaksi));
+    sb.append(String.format("%-14s : %s\n", "Kasir", namaKasir));
+    sb.append(String.format("%-14s : %s\n", "Customer", namaCustomer));
+    sb.append(String.format("%-14s : %s\n", "Meja", nomorMeja));
+    sb.append(String.format("%-14s : %s\n", "Tanggal", tanggal));
     sb.append(garis).append("\n");
-    sb.append("PESANAN:\n");
+    sb.append(centerText("PESANAN", 32)).append("\n");
     sb.append(garis).append("\n");
     
     for (DetailTransaksi.DetailItem item : itemList) {
       String nama = item.getNamaMenu();
+      if (nama.length() > 18) {
+        nama = nama.substring(0, 15) + "...";
+      }
       String jumlah = "x" + item.getJumlah();
       String subtotal = "Rp " + String.format("%,d", item.getSubtotal()).replace(',', '.');
-      sb.append(String.format("%-18s %3s %10s\n", nama, jumlah, subtotal));
+      sb.append(String.format("%-18s %3s %9s\n", nama, jumlah, subtotal));
     }
     sb.append(garis).append("\n");
-    sb.append(String.format("%-14s %16s\n", "Total", total));
-    sb.append(String.format("%-14s %16s\n", "Bayar", bayar));
-    sb.append(String.format("%-14s %16s\n", "Kembalian", kembalian));
+    sb.append(String.format("%-14s %17s\n", "Total", total));
+    sb.append(String.format("%-14s %17s\n", "Bayar", bayar));
+    sb.append(String.format("%-14s %17s\n", "Kembalian", kembalian));
     sb.append(garis).append("\n");
-    sb.append("       Terima Kasih!            \n");
-    sb.append("  Selamat menikmati Pesanan Anda!  \n");
+    sb.append(centerText("Terima Kasih!", 32)).append("\n");
+    sb.append(centerText("Selamat menikmati Pesanan Anda!", 32)).append("\n");
     sb.append(garis).append("\n");
     return sb.toString();
   }

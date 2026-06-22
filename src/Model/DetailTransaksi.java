@@ -22,13 +22,13 @@ import Database.ProdukDAO;
  */
 public class DetailTransaksi {
 
-  private transaksi transaksiAktif;
+  private Transaksi transaksiAktif;
   private List<DetailItem> itemList;
   private ProdukDAO produkDAO = new ProdukDAO();
   private String lastError = "";
 
   public DetailTransaksi() {
-    this.transaksiAktif = new transaksi();
+    this.transaksiAktif = new Transaksi();
     this.itemList = new ArrayList<>();
   }
 
@@ -270,11 +270,11 @@ public class DetailTransaksi {
   }
 
   // Getters & Setters
-  public transaksi getTransaksiAktif() {
+  public Transaksi getTransaksiAktif() {
     return transaksiAktif;
   }
 
-  public void setTransaksiAktif(transaksi transaksiAktif) {
+  public void setTransaksiAktif(Transaksi transaksiAktif) {
     this.transaksiAktif = transaksiAktif;
   }
 

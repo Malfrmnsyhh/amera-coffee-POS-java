@@ -84,7 +84,7 @@ public class Formlogin extends javax.swing.JFrame {
 
     try {
       java.sql.Connection c = Database.Koneksi.getKoneksi();
-      String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+      String sql = "SELECT * FROM users WHERE username = ? AND password = SHA2(?, 256)";
       java.sql.PreparedStatement p = c.prepareStatement(sql);
       p.setString(1, inputUser);
       p.setString(2, inputPass);

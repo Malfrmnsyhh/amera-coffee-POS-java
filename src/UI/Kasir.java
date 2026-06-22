@@ -5,7 +5,6 @@ import Database.ProdukDAO;
 import Model.DetailTransaksi;
 import Model.Member;
 import Model.Produk;
-import Model.transaksi;
 import Utils.Session;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -140,11 +139,18 @@ public class Kasir extends javax.swing.JPanel {
   }
 
   private int parseAngka(javax.swing.JTextField field) {
-    String text = field.getText().replaceAll("[^0-9]", "");
-    if (text.isEmpty()) {
+    try {
+      String text = field.getText().replaceAll("[^0-9]", "");
+      if (text.isEmpty()) {
+        return -1;
+      }
+      if (text.length() > 9) { // Batasan panjang agar tidak overflow (> 999.999.999)
+        return -2;
+      }
+      return Integer.parseInt(text);
+    } catch (NumberFormatException e) {
       return -1;
     }
-    return Integer.parseInt(text);
   }
 
   /**
@@ -163,7 +169,14 @@ public class Kasir extends javax.swing.JPanel {
     updateTampilanTotal(total);
 
     int bayar = parseAngka(txBayar);
-    if (bayar < 0) {
+    if (bayar == -2) {
+      JOptionPane.showMessageDialog(this,
+          "Uang bayar terlalu besar!",
+          "Validasi Gagal", JOptionPane.WARNING_MESSAGE);
+      txBayar.requestFocus();
+      pembayaranSudahValid = false;
+      return;
+    } else if (bayar < 0) {
       JOptionPane.showMessageDialog(this,
           "Masukkan jumlah uang bayar (angka saja, tanpa \"Rp\").",
           "Validasi", JOptionPane.WARNING_MESSAGE);
@@ -649,7 +662,12 @@ public class Kasir extends javax.swing.JPanel {
 
       int total = detailTransaksi.hitungTotal();
       int bayar = parseAngka(txBayar);
-      if (bayar < 0) {
+      if (bayar == -2) {
+        JOptionPane.showMessageDialog(this, "Uang bayar terlalu besar!",
+            "Validasi Gagal", JOptionPane.WARNING_MESSAGE);
+        txBayar.requestFocus();
+        return;
+      } else if (bayar < 0) {
         JOptionPane.showMessageDialog(this, "Masukkan jumlah bayar lalu klik tombol Bayar!",
             "Validasi", JOptionPane.WARNING_MESSAGE);
         txBayar.requestFocus();

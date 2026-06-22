@@ -6,7 +6,7 @@ import java.time.LocalDate;
  * Entity class untuk Transaksi
  * Menyimpan data transaksi secara keseluruhan
  */
-public class transaksi {
+public class Transaksi {
   private String noTransaksi;
   private int kasirId;
   private String namaKasir;
@@ -19,10 +19,10 @@ public class transaksi {
   private int kembalian;
 
   // Constructor
-  public transaksi() {
+  public Transaksi() {
   }
 
-  public transaksi(String noTransaksi, int kasirId, String namaKasir,
+  public Transaksi(String noTransaksi, int kasirId, String namaKasir,
       int memberId, String namaCustomer, int nomorMeja,
       LocalDate tanggal, int total, int bayar, int kembalian) {
     this.noTransaksi = noTransaksi;
@@ -121,7 +121,7 @@ public class transaksi {
 
   @Override
   public String toString() {
-    return "transaksi{" +
+    return "Transaksi{" +
         "noTransaksi='" + noTransaksi + '\'' +
         ", kasirId=" + kasirId +
         ", namaKasir='" + namaKasir + '\'' +

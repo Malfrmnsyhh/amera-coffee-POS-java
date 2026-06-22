@@ -49,7 +49,7 @@ public class UserDAO {
     }
 
     public boolean tambahUser(String namaLengkap, String username, String password, String role) {
-        String sql = "INSERT INTO users (nama_lengkap, username, password, role) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO users (nama_lengkap, username, password, role) VALUES (?, ?, SHA2(?, 256), ?)";
         try (Connection conn = Koneksi.getKoneksi();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, namaLengkap);
@@ -64,14 +64,26 @@ public class UserDAO {
     }
 
     public boolean updateUser(int id, String namaLengkap, String username, String password, String role) {
-        String sql = "UPDATE users SET nama_lengkap=?, username=?, password=?, role=? WHERE id=?";
+        boolean updatePassword = password != null && !password.trim().isEmpty();
+        String sql;
+        if (updatePassword) {
+            sql = "UPDATE users SET nama_lengkap=?, username=?, password=SHA2(?, 256), role=? WHERE id=?";
+        } else {
+            sql = "UPDATE users SET nama_lengkap=?, username=?, role=? WHERE id=?";
+        }
+        
         try (Connection conn = Koneksi.getKoneksi();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, namaLengkap);
             ps.setString(2, username);
-            ps.setString(3, password);
-            ps.setString(4, role);
-            ps.setInt(5, id);
+            if (updatePassword) {
+                ps.setString(3, password);
+                ps.setString(4, role);
+                ps.setInt(5, id);
+            } else {
+                ps.setString(3, role);
+                ps.setInt(4, id);
+            }
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();

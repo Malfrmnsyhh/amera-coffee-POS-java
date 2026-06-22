@@ -36,7 +36,7 @@ public class KelolaPegawai extends JFrame {
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 
         // Tabel
-        model = new DefaultTableModel(new String[]{"ID", "Nama Lengkap", "Username", "Password", "Role"}, 0) {
+        model = new DefaultTableModel(new String[]{"ID", "Nama Lengkap", "Username", "Role"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) { return false; }
         };
@@ -92,8 +92,8 @@ public class KelolaPegawai extends JFrame {
                     selectedUserId = (int) model.getValueAt(row, 0);
                     txNama.setText(model.getValueAt(row, 1).toString());
                     txUsername.setText(model.getValueAt(row, 2).toString());
-                    txPassword.setText(model.getValueAt(row, 3).toString());
-                    cbRole.setSelectedItem(model.getValueAt(row, 4).toString());
+                    txPassword.setText(""); // Biarkan kosong, admin isi hanya jika ingin mengganti password
+                    cbRole.setSelectedItem(model.getValueAt(row, 3).toString());
                 }
             }
         });
@@ -108,7 +108,7 @@ public class KelolaPegawai extends JFrame {
         model.setRowCount(0);
         List<User> users = dao.getAllUsers();
         for (User u : users) {
-            model.addRow(new Object[]{u.id, u.namaLengkap, u.username, u.password, u.role});
+            model.addRow(new Object[]{u.id, u.namaLengkap, u.username, u.role});
         }
     }
 
